@@ -35,13 +35,13 @@ pub fn player_input(
                         commands.add_component(*entity, Carried(player));
 
                         if let Ok(e) = ecs.entry_ref(*entity) {
-                            if e.get_component::<Weapon>().is_ok() {// (1)
+                            if e.get_component::<Weapon>().is_ok() {
                                 <(Entity, &Carried, &Weapon)>::query()
                                     .iter(ecs)
                                     .filter(|(_, c, _)| c.0 == player)
                                     .for_each(|(e, c, w)| {
-                                        commands.remove(*e);// (2)
-                                    })
+                                        commands.remove(*e);
+                                    });
                             }
                         }
                     });

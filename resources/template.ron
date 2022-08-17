@@ -26,13 +26,13 @@ Templates(
         ),
         Template(
             entity_type: Item,
-            name : "Shiny Sword", glyph : 'S', levels : [ 0, 1, 2 ],
+            name : "Shiny Sword", glyph : 'S', levels : [ 1, 2 ],
             frequency: 1,
             base_damage: Some(2)
         ),
         Template(
             entity_type: Item,
-            name : "Huge Sword", glyph : '/', levels : [ 1, 2 ],
+            name : "Huge Sword", glyph : '0', levels : [ 2 ],
             frequency: 1,
             base_damage: Some(3)
         ),
@@ -47,14 +47,14 @@ Templates(
             entity_type: Enemy,
             name : "Orc", glyph : 'o', levels : [ 0, 1, 2 ],
             hp : Some(2),
-            frequency: 2,
+            frequency: 3,
             base_damage: Some(1)
         ),
         Template(
             entity_type: Enemy,
             name : "Ogre", glyph : 'O', levels : [ 1, 2 ],
             hp : Some(5),
-            frequency: 1,
+            frequency: 2,
             base_damage: Some(2)
         ),
         Template(
@@ -64,5 +64,12 @@ Templates(
             frequency: 1,
             base_damage: Some(3)
         ),
+        Template(
+            entity_type: Enemy,
+            name : "Blob", glyph : 'n', levels : [ 2 ],
+            hp : Some(12),
+            frequency: 1,
+            base_damage: Some(4)
+        )
     ],
 )

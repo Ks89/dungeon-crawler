@@ -34,18 +34,20 @@ pub struct MapBuilder {
 }
 
 impl MapBuilder {
-    pub fn new(rng: &mut RandomNumberGenerator) -> Self {
-        let mut architect: Box<dyn MapArchitect> = match rng.range(0, 3) {
-            0 => Box::new(DrunkardsWalkArchitect {}),
+    pub fn new(rng: &mut RandomNumberGenerator, map_level: u32) -> Self {
+        let mut architect: Box<dyn MapArchitect> = match map_level {
+            0 => Box::new(CellularAutomataArchitect {}),
             1 => Box::new(RoomsArchitect {}),
-            _ => Box::new(CellularAutomataArchitect {}),
+            _ => Box::new(DrunkardsWalkArchitect {}),
         };
         let mut mb = architect.new(rng);
         apply_prefab(&mut mb, rng);
 
-        mb.theme = match rng.range(0, 2) {
-            0 => DungeonTheme::new(),
-            _ => ForestTheme::new()
+        mb.theme = match map_level {
+            0 => ForestTheme::new(),
+            1 => DungeonTheme::new(),
+            2 => IceTheme::new(),
+            _ => DungeonTheme::new()
         };
         mb
     }
@@ -55,6 +57,7 @@ impl MapBuilder {
     }
 
     fn find_most_distant(&self) -> Point {
+        const UNREACHABLE: &f32 = &f32::MAX;
         let dijkstra_map = DijkstraMap::new(
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
@@ -62,7 +65,6 @@ impl MapBuilder {
             &self.map,
             1024.0,
         );
-        const UNREACHABLE: &f32 = &f32::MAX;
         self.map.index_to_point2d(
             dijkstra_map.map
                 .iter()
@@ -150,7 +152,7 @@ impl MapBuilder {
         let mut spawns = Vec::new();
         for _ in 0..NUM_MONSTERS {
             let target_index = rng.random_slice_index(&spawnable_tiles).unwrap();
-            spawns.push(spawnable_tiles[target_index].clone());
+            spawns.push(spawnable_tiles[target_index]);
             spawnable_tiles.remove(target_index);
         }
         spawns
