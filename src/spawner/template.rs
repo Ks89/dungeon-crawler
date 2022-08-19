@@ -48,17 +48,17 @@ impl Templates {
             });
 
         let mut commands = CommandBuffer::new(ecs);
-        spawn_points.iter().for_each(|pt| {
+        for pt in spawn_points.iter() {
             if let Some(entity) = rng.random_slice_entry(&available_entities) {
                 self.spawn_entity(pt, entity, &mut commands);
             }
-        });
+        }
         commands.flush(ecs);
     }
 
     pub fn spawn_entity(&self, pt: &Point, template: &Template, commands: &mut legion::systems::CommandBuffer) {
         let entity = commands.push((
-            pt.clone(),
+            *pt,
             Render {
                 color: ColorPair::new(WHITE, BLACK),
                 glyph: to_cp437(template.glyph),
@@ -81,7 +81,7 @@ impl Templates {
         }
 
         if let Some(effects) = &template.provides {
-            effects.iter().for_each(|(provides, n)| {
+            for (provides, n) in effects.iter() {
                 match provides.as_str() {
                     "Healing" => commands.add_component(entity, ProvidesHealing { amount: *n }),
                     "MagicMap" => commands.add_component(entity, ProvidesDungeonMap {}),
@@ -89,7 +89,7 @@ impl Templates {
                         println!("Warning: we don't know how to provide {}", provides);
                     }
                 }
-            });
+            }
         }
         if let Some(damage) = &template.base_damage {
             commands.add_component(entity, Damage(*damage));

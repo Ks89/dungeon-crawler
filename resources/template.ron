@@ -60,16 +60,16 @@ Templates(
         Template(
             entity_type: Enemy,
             name : "Ettin", glyph : 'E', levels : [ 2 ],
-            hp : Some(10),
+            hp : Some(8),
             frequency: 1,
             base_damage: Some(3)
         ),
         Template(
             entity_type: Enemy,
             name : "Blob", glyph : 'n', levels : [ 2 ],
-            hp : Some(12),
+            hp : Some(10),
             frequency: 1,
-            base_damage: Some(4)
+            base_damage: Some(3)
         )
     ],
 )

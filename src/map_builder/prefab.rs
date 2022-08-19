@@ -14,12 +14,12 @@ const FORTRESS: (&str, i32, i32) = ("
 ------------
 ", 12, 11);
 
-pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
+pub fn apply_structure(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
     let mut placement = None;
     let dijkstra_map = DijkstraMap::new(
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        &vec![mb.map.point2d_to_index(mb.player_start)],
+        &[mb.map.point2d_to_index(mb.player_start)],
         &mb.map,
         1024.0,
     );

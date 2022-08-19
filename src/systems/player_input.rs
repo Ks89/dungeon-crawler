@@ -45,7 +45,7 @@ pub fn player_input(
                 let mut weapons = <(Entity, &Weapon, &Point)>::query();
                 weapons.iter(ecs)
                     .filter(|(_entity, _weapon, &weapon_pos)| weapon_pos == player_pos)
-                    .for_each(|(entity, weapon, weapon_pos)| {
+                    .for_each(|(entity, _, _)| {
                         commands.remove_component::<Point>(*entity);
                         commands.add_component(*entity, Carried(player));
 
@@ -55,7 +55,7 @@ pub fn player_input(
                                 <(Entity, &Carried, &Weapon)>::query()
                                     .iter(ecs)
                                     .filter(|(_, c, _)| c.0 == player)
-                                    .for_each(|(e, c, w)| {
+                                    .for_each(|(e, _, _)| {
                                         commands.remove(*e);
                                     });
                             }

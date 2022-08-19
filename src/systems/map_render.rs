@@ -10,7 +10,7 @@ pub fn map_render(
     ecs: &SubWorld,
 ) {
     let mut fov = <&FieldOfView>::query().filter(component::<Player>());
-    let player_fov = fov.iter(ecs).nth(0).unwrap();
+    let player_fov = fov.iter(ecs).next().unwrap();
     let mut draw_batch = DrawBatch::new(); // creates a new batch. Commands are applied in order.
     draw_batch.target(0);
     for y in camera.top_y..=camera.bottom_y {

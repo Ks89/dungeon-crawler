@@ -11,8 +11,7 @@ use crate::prelude::*;
 pub fn hud(ecs: &SubWorld) {
     let mut health_query = <&Health>::query().filter(component::<Player>());
     let player_health = health_query
-        .iter(ecs)
-        .nth(0)
+        .iter(ecs).next()
         .unwrap();
 
     let mut draw_batch = DrawBatch::new();
@@ -75,7 +74,7 @@ pub fn hud(ecs: &SubWorld) {
     weapon_query
         .iter(ecs)
         .filter(|(_, carried, _, _)| carried.0 == player)
-        .for_each(|(w, _, d, n)| {
+        .for_each(|(_, _, d, n)| {
             draw_batch.print_color(
                 Point::new(1, (SCREEN_HEIGHT * 2) - 2),
                 format!("Weapon: {} (attack: +{})", &n.0, &d.0),

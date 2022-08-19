@@ -25,7 +25,7 @@ pub fn use_items(ecs: &mut SubWorld, commands: &mut CommandBuffer, #[resource] m
             commands.remove(*entity);
         });
 
-    for heal in healing_to_apply.iter() {
+    for heal in &healing_to_apply {
         if let Ok(mut target) = ecs.entry_mut(heal.0) {
             if let Ok(health) = target.get_component_mut::<Health>() {
                 health.current = i32::min(

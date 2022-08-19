@@ -10,7 +10,7 @@ use themes::*;
 use rooms::RoomsArchitect;
 use automata::CellularAutomataArchitect;
 use drunkard::DrunkardsWalkArchitect;
-use crate::map_builder::prefab::apply_prefab;
+use crate::map_builder::prefab::apply_structure;
 
 trait MapArchitect {
     fn new(&mut self, rng: &mut RandomNumberGenerator) -> MapBuilder;
@@ -39,7 +39,7 @@ impl MapBuilder {
             _ => Box::new(DrunkardsWalkArchitect {}),
         };
         let mut mb = architect.new(rng);
-        apply_prefab(&mut mb, rng);
+        apply_structure(&mut mb, rng);
 
         mb.theme = match map_level {
             0 => ForestTheme::new(),
@@ -59,7 +59,7 @@ impl MapBuilder {
         let dijkstra_map = DijkstraMap::new(
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
-            &vec![self.map.point2d_to_index(self.player_start)],
+            &[self.map.point2d_to_index(self.player_start)],
             &self.map,
             1024.0,
         );
@@ -82,7 +82,7 @@ impl MapBuilder {
                 rng.range(2, 10),
             );
             let mut overlap = false;
-            for r in self.rooms.iter() {
+            for r in &self.rooms {
                 if r.intersect(&room) {
                     overlap = true;
                 }

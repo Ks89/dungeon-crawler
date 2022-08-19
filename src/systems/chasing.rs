@@ -11,7 +11,7 @@ pub fn chasing(#[resource] map: &Map, ecs: &mut SubWorld, commands: &mut Command
     let mut positions = <(Entity, &Point, &Health)>::query();
     let mut player = <(&Point, &Player)>::query();
 
-    let player_pos = player.iter(ecs).nth(0).unwrap().0;
+    let player_pos = player.iter(ecs).next().unwrap().0;
     let player_idx = map_idx(player_pos.x, player_pos.y);
 
     let search_targets = vec![player_idx];
@@ -26,7 +26,7 @@ pub fn chasing(#[resource] map: &Map, ecs: &mut SubWorld, commands: &mut Command
     // if the monster is adjacent, it will attack the player. If the player
     // is not adjacent to the monster, it will follow the Dijkstra map towards the player.
     movers.iter(ecs).for_each(|(entity, pos, _, fov)| {
-        if !fov.visible_tiles.contains(&player_pos) {
+        if !fov.visible_tiles.contains(player_pos) {
             return;
         }
         let idx = map_idx(pos.x, pos.y);
