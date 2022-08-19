@@ -1,6 +1,5 @@
 use crate::prelude::*;
 
-mod empty;
 mod rooms;
 mod automata;
 mod drunkard;
@@ -8,7 +7,6 @@ mod prefab;
 mod themes;
 
 use themes::*;
-use empty::EmptyArchitect;
 use rooms::RoomsArchitect;
 use automata::CellularAutomataArchitect;
 use drunkard::DrunkardsWalkArchitect;
@@ -97,7 +95,7 @@ impl MapBuilder {
                     }
                 });
 
-                self.rooms.push(room)
+                self.rooms.push(room);
             }
         }
     }

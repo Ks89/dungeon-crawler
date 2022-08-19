@@ -6,6 +6,7 @@ use crate::prelude::*;
 #[read_component(Enemy)]
 #[write_component(Health)]
 #[read_component(Item)]
+#[read_component(Weapon)]
 #[read_component(Carried)]
 pub fn player_input(
     ecs: &mut SubWorld,
@@ -33,7 +34,22 @@ pub fn player_input(
                     .for_each(|(entity, _item, _item_pos)| {
                         commands.remove_component::<Point>(*entity);
                         commands.add_component(*entity, Carried(player));
+                    });
+                Point::new(0, 0)
+            },
+            VirtualKeyCode::U => {
+                let (player, player_pos) = players
+                    .iter(ecs)
+                    .find_map(|(entity, pos)| Some((*entity, *pos)))
+                    .unwrap();
+                let mut weapons = <(Entity, &Weapon, &Point)>::query();
+                weapons.iter(ecs)
+                    .filter(|(_entity, _weapon, &weapon_pos)| weapon_pos == player_pos)
+                    .for_each(|(entity, weapon, weapon_pos)| {
+                        commands.remove_component::<Point>(*entity);
+                        commands.add_component(*entity, Carried(player));
 
+                        // check if the player has a weapon. If yes, remove it, because he can carry only onw weapon at a time.
                         if let Ok(e) = ecs.entry_ref(*entity) {
                             if e.get_component::<Weapon>().is_ok() {
                                 <(Entity, &Carried, &Weapon)>::query()

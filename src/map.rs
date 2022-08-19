@@ -6,7 +6,7 @@ const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 pub enum TileType {
     Wall,
     Floor,
-    Exit
+    Exit,
 }
 
 // we represent the 2d map as an array and with this function you can map 2d coordinates to vector indexes
@@ -16,14 +16,14 @@ pub fn map_idx(x: i32, y: i32) -> usize {
 
 pub struct Map {
     pub tiles: Vec<TileType>,
-    pub revealed_tiles: Vec<bool>
+    pub revealed_tiles: Vec<bool>,
 }
 
 impl Map {
     pub fn new() -> Self {
         Self {
             tiles: vec![TileType::Floor; NUM_TILES],
-            revealed_tiles: vec![false; NUM_TILES]
+            revealed_tiles: vec![false; NUM_TILES],
         }
     }
 
@@ -32,10 +32,10 @@ impl Map {
     }
 
     pub fn try_idx(&self, point: Point) -> Option<usize> {
-        if !self.in_bounds(point) {
-            None
-        } else {
+        if self.in_bounds(point) {
             Some(map_idx(point.x, point.y))
+        } else {
+            None
         }
     }
 
@@ -78,16 +78,16 @@ impl BaseMap for Map {
         let location = self.index_to_point2d(idx);
 
         if let Some(idx) = self.valid_exit(location, Point::new(-1, 0)) {
-            exits.push((idx, 1.0))
+            exits.push((idx, 1.0));
         }
         if let Some(idx) = self.valid_exit(location, Point::new(1, 0)) {
-            exits.push((idx, 1.0))
+            exits.push((idx, 1.0));
         }
         if let Some(idx) = self.valid_exit(location, Point::new(0, -1)) {
-            exits.push((idx, 1.0))
+            exits.push((idx, 1.0));
         }
         if let Some(idx) = self.valid_exit(location, Point::new(0, 1)) {
-            exits.push((idx, 1.0))
+            exits.push((idx, 1.0));
         }
 
         exits

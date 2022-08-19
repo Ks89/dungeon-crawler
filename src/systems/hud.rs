@@ -5,6 +5,8 @@ use crate::prelude::*;
 #[read_component(Player)]
 #[read_component(Item)]
 #[read_component(Carried)]
+#[read_component(Weapon)]
+#[read_component(Damage)]
 #[read_component(Name)]
 pub fn hud(ecs: &SubWorld) {
     let mut health_query = <&Health>::query().filter(component::<Player>());
@@ -67,6 +69,19 @@ pub fn hud(ecs: &SubWorld) {
             ColorPair::new(YELLOW, BLACK),
         );
     }
+
+    // display current weapon
+    let mut weapon_query = <(&Weapon, &Carried, &Damage, &Name)>::query();
+    weapon_query
+        .iter(ecs)
+        .filter(|(_, carried, _, _)| carried.0 == player)
+        .for_each(|(w, _, d, n)| {
+            draw_batch.print_color(
+                Point::new(1, (SCREEN_HEIGHT * 2) - 2),
+                format!("Weapon: {} (attack: +{})", &n.0, &d.0),
+                ColorPair::new(YELLOW, BLACK),
+            );
+        });
 
     draw_batch.submit(10000).expect("Batch error");
 }

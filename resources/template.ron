@@ -19,19 +19,19 @@ Templates(
             frequency: 1
         ),
         Template(
-            entity_type: Item,
+            entity_type: Weapon,
             name : "Rusty Sword", glyph : '/', levels : [ 0, 1, 2 ],
             frequency: 1,
             base_damage: Some(1)
         ),
         Template(
-            entity_type: Item,
+            entity_type: Weapon,
             name : "Shiny Sword", glyph : 'S', levels : [ 1, 2 ],
             frequency: 1,
             base_damage: Some(2)
         ),
         Template(
-            entity_type: Item,
+            entity_type: Weapon,
             name : "Huge Sword", glyph : '0', levels : [ 2 ],
             frequency: 1,
             base_damage: Some(3)
